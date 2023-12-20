@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/Edwinfpirajan/server.git/internal/api/groups"
-	"github.com/Edwinfpirajan/server.git/internal/health/handler"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/handlers"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/router/groups"
 	"github.com/labstack/echo/v4"
 )
 
@@ -26,7 +26,7 @@ func NewRouter(
 // Init is the implementation of Group.Init
 func (r *Router) Init() {
 
-	r.server.GET("/health", handler.HealthCheck)
+	r.server.GET("/health", handlers.HealthCheck)
 
 	basePath := r.server.Group("/api/v1")
 

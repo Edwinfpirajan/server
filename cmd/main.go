@@ -6,7 +6,7 @@ import (
 
 	"github.com/Edwinfpirajan/server.git/cmd/providers"
 	"github.com/Edwinfpirajan/server.git/config"
-	"github.com/Edwinfpirajan/server.git/internal/api/router"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/router"
 	"github.com/labstack/echo/v4"
 )
 

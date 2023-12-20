@@ -1,7 +1,7 @@
 package groups
 
 import (
-	"github.com/Edwinfpirajan/server.git/internal/collaborator/handler"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/handlers"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,11 +12,11 @@ type CollaboratorGroup interface {
 
 // collaboratorGroup is the implementation of CollaboratorGroup
 type collaboratorGroup struct {
-	h handler.CollaboratorHandler
+	h handlers.CollaboratorHandler
 }
 
 // NewCollaboratorGroup is the constructor of collaboratorGroup
-func NewCollaboratorGroup(h handler.CollaboratorHandler) CollaboratorGroup {
+func NewCollaboratorGroup(h handlers.CollaboratorHandler) CollaboratorGroup {
 	return &collaboratorGroup{
 		h: h,
 	}
@@ -25,7 +25,7 @@ func NewCollaboratorGroup(h handler.CollaboratorHandler) CollaboratorGroup {
 // Resource is the implementation of CollaboratorGroup.Resource
 func (c collaboratorGroup) Resource(g *echo.Group) {
 
-	collaboratorHandler := handler.NewCollaboratorHandler()
+	collaboratorHandler := handlers.NewCollaboratorHandler()
 
 	collaborator := g.Group("/collaborator")
 

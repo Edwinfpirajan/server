@@ -3,11 +3,11 @@ package providers
 import (
 	"time"
 
-	"github.com/Edwinfpirajan/server.git/internal/api/groups"
-	"github.com/Edwinfpirajan/server.git/internal/api/router"
-	"github.com/Edwinfpirajan/server.git/internal/collaborator/handler"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/handlers"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/router"
+	"github.com/Edwinfpirajan/server.git/internal/infra/api/router/groups"
 	"github.com/Edwinfpirajan/server.git/internal/src/db"
-	"github.com/Edwinfpirajan/server.git/internal/utils/http"
+	"github.com/Edwinfpirajan/server.git/utils/http"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/dig"
 )
@@ -31,7 +31,7 @@ func BuildContainer() *dig.Container {
 
 	_ = Container.Provide(groups.NewCollaboratorGroup)
 
-	_ = Container.Provide(handler.NewCollaboratorHandler)
+	_ = Container.Provide(handlers.NewCollaboratorHandler)
 
 	return Container
 }
