@@ -1,0 +1,23 @@
+# EditorConfig helps developers define and maintain consistent coding styles
+# across different editors and IDEs.
+
+# top-most EditorConfig file
+root = true
+
+# Go files
+[*.{go,mod,sum}]
+charset = utf-8
+indent_style = tab
+indent_size = 4
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Exclude directories and files
+[**/*.log]
+indent_style = space
