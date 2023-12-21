@@ -7,10 +7,12 @@ import (
 	"time"
 )
 
+// HttpClient is the interface that wraps the basic Get method.
 type HttpClient interface {
 	Get(c context.Context, url string) (*http.Response, error)
 }
 
+// httpClient is an implementation of HttpClient interface.
 type httpClient struct {
 	Client     *http.Client
 	MaxRetries int
@@ -18,6 +20,7 @@ type httpClient struct {
 	TimeOut    time.Duration
 }
 
+// NewHTTPClient returns a new HttpClient.
 func NewHTTPClient(maxRetries int, retryInterval time.Duration, timeout time.Duration) HttpClient {
 	return &httpClient{
 		Client:     &http.Client{},
@@ -27,6 +30,7 @@ func NewHTTPClient(maxRetries int, retryInterval time.Duration, timeout time.Dur
 	}
 }
 
+// doRequest is a helper function to do http request.
 func (hc *httpClient) doRequest(req *http.Request) (resp *http.Response, err error) {
 	i := 0
 	for ; i < hc.MaxRetries; i++ {
@@ -44,6 +48,7 @@ func (hc *httpClient) doRequest(req *http.Request) (resp *http.Response, err err
 	return
 }
 
+// Get is a helper function to do http get request.
 func (hc *httpClient) Get(c context.Context, url string) (*http.Response, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

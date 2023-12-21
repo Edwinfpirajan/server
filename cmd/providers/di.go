@@ -3,6 +3,8 @@ package providers
 import (
 	"time"
 
+	"github.com/Edwinfpirajan/server.git/internal/app"
+	"github.com/Edwinfpirajan/server.git/internal/infra/adapters/db/implementation"
 	"github.com/Edwinfpirajan/server.git/internal/infra/api/handlers"
 	"github.com/Edwinfpirajan/server.git/internal/infra/api/router"
 	"github.com/Edwinfpirajan/server.git/internal/infra/api/router/groups"
@@ -15,6 +17,7 @@ import (
 var Container *dig.Container
 
 func BuildContainer() *dig.Container {
+
 	Container = dig.New()
 
 	_ = Container.Provide(func() *echo.Echo {
@@ -27,11 +30,21 @@ func BuildContainer() *dig.Container {
 
 	_ = Container.Provide(db.NewPostgresConnection)
 
+	_ = Container.Provide(db.NewSQLBuilder)
+	// Repository
+	_ = Container.Provide(implementation.NewDbUserRepository)
+
+	// Router
 	_ = Container.Provide(router.NewRouter)
 
-	_ = Container.Provide(groups.NewCollaboratorGroup)
+	// Groups
+	_ = Container.Provide(groups.NewUserGroup)
 
-	_ = Container.Provide(handlers.NewCollaboratorHandler)
+	// Handlers
+	_ = Container.Provide(handlers.NewUserHandler)
+
+	// App
+	_ = Container.Provide(app.NewUserApp)
 
 	return Container
 }

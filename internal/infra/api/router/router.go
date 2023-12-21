@@ -8,18 +8,18 @@ import (
 
 // Router is the implementation of Group
 type Router struct {
-	server       *echo.Echo
-	collaborator groups.CollaboratorGroup
+	server *echo.Echo
+	user   groups.UserGroup
 }
 
 // NewRouter is the constructor of Router
 func NewRouter(
 	server *echo.Echo,
-	collaborator groups.CollaboratorGroup,
+	user groups.UserGroup,
 ) *Router {
 	return &Router{
 		server,
-		collaborator,
+		user,
 	}
 }
 
@@ -28,8 +28,8 @@ func (r *Router) Init() {
 
 	r.server.GET("/health", handlers.HealthCheck)
 
-	basePath := r.server.Group("/api/v1")
+	base := r.server.Group("/api/v1")
 
-	r.collaborator.Resource(basePath)
+	r.user.Resource(base)
 
 }
