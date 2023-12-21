@@ -10,6 +10,7 @@ import (
 
 // UserApp is the interface of user application
 type UserApp interface {
+	CreateUser(ctx context.Context, user dto.User) (dto.User, error)
 	GetUsers(ctx context.Context) (dto.Users, error)
 }
 
@@ -21,6 +22,15 @@ type userApp struct {
 // NewUserApp is the constructor of UserApp
 func NewUserApp(repo interfaces.NewUserRepository) UserApp {
 	return &userApp{repo}
+}
+
+func (ua *userApp) CreateUser(ctx context.Context, user dto.User) (dto.User, error) {
+	user, err := ua.repo.CreateUser(ctx, user)
+	if err != nil {
+		return dto.User{}, err
+	}
+
+	return user, nil
 }
 
 // GetUsers is the implementation of UserApp.GetUsers

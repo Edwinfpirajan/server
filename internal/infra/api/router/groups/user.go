@@ -28,5 +28,6 @@ func (groups userGroup) Resource(g *echo.Group) {
 
 	group := g.Group("/user")
 
+	group.POST("/create", groups.h.CreateUser)
 	group.GET("/get", groups.h.GetUsers)
 }
