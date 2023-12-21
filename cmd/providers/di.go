@@ -31,20 +31,25 @@ func BuildContainer() *dig.Container {
 	_ = Container.Provide(db.NewPostgresConnection)
 
 	_ = Container.Provide(implementation.NewSQLBuilder)
+
 	// Repository
 	_ = Container.Provide(implementation.NewUserRepository)
-
-	// Router
-	_ = Container.Provide(router.NewRouter)
-
-	// Groups
-	_ = Container.Provide(groups.NewUserGroup)
-
-	// Handlers
-	_ = Container.Provide(handlers.NewUserHandler)
+	_ = Container.Provide(implementation.NewRoleRepository)
 
 	// App
 	_ = Container.Provide(app.NewUserApp)
+	_ = Container.Provide(app.NewRoleApp)
+
+	// Handlers
+	_ = Container.Provide(handlers.NewUserHandler)
+	_ = Container.Provide(handlers.NewRoleHandler)
+
+	// Groups
+	_ = Container.Provide(groups.NewUserGroup)
+	_ = Container.Provide(groups.NewRoleGroup)
+
+	// Router
+	_ = Container.Provide(router.NewRouter)
 
 	return Container
 }

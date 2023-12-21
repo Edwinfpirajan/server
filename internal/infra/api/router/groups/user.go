@@ -12,22 +12,21 @@ type UserGroup interface {
 
 // userGroup is the implementation of UserGroup
 type userGroup struct {
-	h handlers.UserHandler
+	uh handlers.UserHandler
 }
 
 // NewUserGroup is the constructor of userGroup
-func NewUserGroup(h handlers.UserHandler) UserGroup {
+func NewUserGroup(uh handlers.UserHandler) UserGroup {
 	return &userGroup{
-		h,
+		uh,
 	}
 }
 
 // Resource is the implementation of UserGroup.Resource
 func (groups userGroup) Resource(g *echo.Group) {
-	//inyeccion de dependencias repository, app, handler, como hacerlas?
 
 	group := g.Group("/user")
 
-	group.POST("/create", groups.h.CreateUser)
-	group.GET("/get", groups.h.GetUsers)
+	group.POST("/create", groups.uh.CreateUser)
+	group.GET("/get", groups.uh.GetUsers)
 }

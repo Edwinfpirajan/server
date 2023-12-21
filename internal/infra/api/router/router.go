@@ -10,16 +10,19 @@ import (
 type Router struct {
 	server *echo.Echo
 	user   groups.UserGroup
+	role   groups.RoleGroup
 }
 
 // NewRouter is the constructor of Router
 func NewRouter(
 	server *echo.Echo,
 	user groups.UserGroup,
+	role groups.RoleGroup,
 ) *Router {
 	return &Router{
 		server,
 		user,
+		role,
 	}
 }
 
@@ -31,5 +34,6 @@ func (r *Router) Init() {
 	base := r.server.Group("/api/v1")
 
 	r.user.Resource(base)
+	r.role.Resource(base)
 
 }
