@@ -42,7 +42,7 @@ func NewPostgresConnection() *gorm.DB {
 
 // This is a method that will create a single instance of the connection
 func MainDbConnection() *gorm.DB {
-	config.Enviroments()
+	// config.Enviroments()
 
 	dsn := enviromentsDSN()
 
@@ -67,11 +67,11 @@ func MainDbConnection() *gorm.DB {
 func enviromentsDSN() string {
 	// This is a struct that will hold the database connection options
 	options := pgOptions{
-		Host:     config.Enviroments().MainDb.Host,
-		User:     config.Enviroments().MainDb.User,
-		Password: config.Enviroments().MainDb.Password,
-		Dbname:   config.Enviroments().MainDb.DbName,
-		Port:     fmt.Sprintf("%d", config.Enviroments().MainDb.Port),
+		Host:     config.Environments().MainDb.Host,
+		User:     config.Environments().MainDb.User,
+		Password: config.Environments().MainDb.Password,
+		Dbname:   config.Environments().MainDb.DbName,
+		Port:     fmt.Sprintf("%d", config.Environments().MainDb.Port),
 	}
 
 	return options.buildDSN()

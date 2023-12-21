@@ -18,8 +18,8 @@ func NewDbUserRepository(db *gorm.DB) interfaces.NewUserRepository {
 	}
 }
 
-func (ur *userRepository) GetUsers(ctx context.Context) ([]dto.User, error) {
-	var users []dto.User
+func (ur *userRepository) GetUsers(ctx context.Context) (dto.Users, error) {
+	var users dto.Users
 	ur.db.WithContext(ctx).Find(&users)
 	return users, nil
 }

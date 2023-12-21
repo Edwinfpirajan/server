@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/andresxlp/gosuite/config"
+	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/color"
 )
 
@@ -30,14 +31,16 @@ type MainDB struct {
 	DbName   string `mapstructure:"name" validate:"required"`
 }
 
-func Enviroments() Config {
+func Environments() Config {
 	Once.Do(func() {
-		if err := config.SetEnvsFromFile("server", ".env"); err != nil {
+		err := godotenv.Load(".env")
+		if err != nil {
 			color.Green("Database connection established")
-			log.Panicf(color.Red("Error loading enviroment variables: %v"), err)
+			log.Panicf(color.Red("Error loading environment variables: %v"), err)
 		}
+
 		if err := config.GetConfigFromEnv(&Cfg); err != nil {
-			log.Panicf("Error parsing enviroment variables: %v", err)
+			log.Panicf("Error parsing environment variables: %v", err)
 		}
 	})
 

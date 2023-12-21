@@ -10,7 +10,7 @@ import (
 
 // UserApp is the interface of user application
 type UserApp interface {
-	GetUsers(ctx context.Context) ([]dto.User, error)
+	GetUsers(ctx context.Context) (dto.Users, error)
 }
 
 // userApp is the implementation of UserApp
@@ -24,7 +24,7 @@ func NewUserApp(repo interfaces.NewUserRepository) UserApp {
 }
 
 // GetUsers is the implementation of UserApp.GetUsers
-func (ua *userApp) GetUsers(ctx context.Context) ([]dto.User, error) {
+func (ua *userApp) GetUsers(ctx context.Context) (dto.Users, error) {
 	users, err := ua.repo.GetUsers(ctx)
 	fmt.Println(users)
 	if err != nil {

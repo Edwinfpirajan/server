@@ -7,5 +7,5 @@ import (
 )
 
 type NewUserRepository interface {
-	GetUsers(ctx context.Context) ([]dto.User, error)
+	GetUsers(ctx context.Context) (dto.Users, error)
 }

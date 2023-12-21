@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	serverPort = config.Enviroments().Server.Port
+	serverPort = config.Environments().Server.Port
 )
 
 func main() {
