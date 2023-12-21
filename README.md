@@ -4,58 +4,6 @@ La Biblioteca Base para Servidores es un conjunto de herramientas y estructuras 
 
 ## Estructura del Proyecto
 
-.
-├── cmd
-│ ├── main.go
-│ └── providers
-│ └── di.go
-├── config
-│ └── enviroment.go
-├── go.mod
-├── go.sum
-├── internal
-│ ├── app
-│ │ ├── role.go
-│ │ └── user.go
-│ ├── domain
-│ │ ├── dto
-│ │ │ ├── role.go
-│ │ │ └── user.go
-│ │ ├── entity
-│ │ │ ├── paginate.go
-│ │ │ ├── response.go
-│ │ │ └── user.go.txt
-│ │ └── ports
-│ │ └── db
-│ │ └── interfaces
-│ │ ├── role.go
-│ │ └── user.go
-│ ├── infra
-│ │ ├── adapters
-│ │ │ └── db
-│ │ │ └── implementation
-│ │ │ ├── role.go
-│ │ │ ├── sqlBuilder.go
-│ │ │ └── user.go
-│ │ └── api
-│ │ ├── handlers
-│ │ │ ├── health.go
-│ │ │ ├── role.go
-│ │ │ └── user.go
-│ │ └── router
-│ │ ├── groups
-│ │ │ ├── role.go
-│ │ │ └── user.go
-│ │ └── router.go
-│ └── src
-│ └── db
-│ └── dbConnectionPostgres.go
-├── README.md
-├── sqlmigrations
-│ └── smartdb.sql
-└── utils
-└── http
-└── http.go
 
 ## Características
 
