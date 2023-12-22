@@ -7,7 +7,6 @@ import (
 	"github.com/Edwinfpirajan/server.git/internal/domain/dto"
 	"github.com/Edwinfpirajan/server.git/internal/domain/ports/db/interfaces"
 	"github.com/google/uuid"
-	"github.com/labstack/gommon/color"
 )
 
 // userRepository is the implementation of NewUserRepository
@@ -45,18 +44,6 @@ func (ur *userRepository) CreateUser(ctx context.Context, user dto.User) (dto.Us
 }
 
 // GetUsers is the implementation of NewUserRepository.GetUsers
-func (ur *userRepository) GetUsers(ctx context.Context) (dto.Users, error) {
-	var users dto.Users
-	result := ur.builder.Select("*").
-		From("users u").
-		Joins("JOIN roles r ON u.fk_role_id = r.id").
-		Query().
-		Find(&users)
+func (ur *userRepository) GetUsers(ctx context.Context, request dto.UsersRequest) (dto.Pagination, error) {
 
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	fmt.Println(color.Red(users))
-	return users, nil
 }

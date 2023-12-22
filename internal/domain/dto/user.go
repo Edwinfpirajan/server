@@ -21,3 +21,7 @@ type User struct {
 
 // Users is a slice of User
 type Users []User
+
+type UsersRequest struct {
+	Paginate Paginate
+}
