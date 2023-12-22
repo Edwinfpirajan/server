@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Edwinfpirajan/server.git/internal/app"
@@ -31,9 +32,10 @@ func NewUserHandler(ua app.UserApp) UserHandler {
 func (uh *userHandler) CreateUser(c echo.Context) error {
 	var user dto.User
 	err := c.Bind(&user)
+	fmt.Println(user)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, entity.Response{
-			Message: "Bad Request",
+			Message: "No fue posible crear el usuario",
 			Data:    nil,
 		})
 	}

@@ -26,6 +26,7 @@ func NewUserApp(repo interfaces.NewUserRepository) UserApp {
 
 func (ua *userApp) CreateUser(ctx context.Context, user dto.User) (dto.User, error) {
 	user, err := ua.repo.CreateUser(ctx, user)
+	fmt.Println(user)
 	if err != nil {
 		return dto.User{}, err
 	}
