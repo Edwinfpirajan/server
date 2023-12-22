@@ -11,7 +11,7 @@ import (
 // UserApp is the interface of user application
 type UserApp interface {
 	CreateUser(ctx context.Context, user dto.User) (dto.User, error)
-	GetUsers(ctx context.Context) (dto.Users, error)
+	GetUsers(ctx context.Context, request dto.UsersRequest) (dto.Pagination, error)
 }
 
 // userApp is the implementation of UserApp
@@ -35,11 +35,10 @@ func (ua *userApp) CreateUser(ctx context.Context, user dto.User) (dto.User, err
 }
 
 // GetUsers is the implementation of UserApp.GetUsers
-func (ua *userApp) GetUsers(ctx context.Context) (dto.Users, error) {
-	users, err := ua.repo.GetUsers(ctx)
-	fmt.Println(users)
+func (ua *userApp) GetUsers(ctx context.Context, request dto.UsersRequest) (dto.Pagination, error) {
+	users, err := ua.repo.GetUsers(ctx, request)
 	if err != nil {
-		return nil, err
+		return dto.Pagination{}, err
 	}
 
 	return users, nil

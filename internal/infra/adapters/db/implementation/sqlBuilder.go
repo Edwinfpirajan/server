@@ -23,8 +23,6 @@ type FilterCondition struct {
 	Value    interface{}
 }
 
-// Paginate represents the information for pagination
-
 // NewSQLBuilder creates a new instance of SQLBuilder
 func NewSQLBuilder(db *gorm.DB) *SQLBuilder {
 	return &SQLBuilder{
@@ -42,7 +40,7 @@ func (sb *SQLBuilder) Select(columns ...string) *SQLBuilder {
 	return sb
 }
 
-// prefixColumns agrega el alias a cada columna en la lista
+// prefixColumns prefixes the columns with the given alias
 func prefixColumns(columns []string, alias string) []string {
 	prefixedColumns := make([]string, len(columns))
 	for i, col := range columns {
@@ -62,50 +60,44 @@ func (sb *SQLBuilder) From(table string, alias ...string) *SQLBuilder {
 }
 
 // Where sets the WHERE part of the SQL query
-func (sb *SQLBuilder) Where(condition string) *SQLBuilder {
-	sb.query = fmt.Sprintf("%s WHERE %s", sb.query, condition)
+func (sb *SQLBuilder) Where(conditions ...FilterCondition) *SQLBuilder {
+	for _, condition := range conditions {
+		buildFilter(sb, condition.Field, condition.Value, condition.Operator)
+	}
 	return sb
 }
 
-// Where sets the WHERE part of the SQL query
-func BuildFilters(field string, value interface{}, op string, where *string) {
+func (sb *SQLBuilder) BuildFilters(field string, value interface{}, op string, where *string) *SQLBuilder {
+	buildFilter(sb, field, value, op)
+	return sb
+}
+
+// buildFilter builds a filter condition
+func buildFilter(sb *SQLBuilder, field string, value interface{}, op string) {
 	switch v := value.(type) {
 	case string:
-		buildStringFilter(field, v, op, where)
+		buildStringFilter(sb, field, v, op)
 	case time.Time:
-		buildTimeFilter(field, v, op, where)
+		buildTimeFilter(sb, field, v, op)
 	case *bool:
-		buildBoolFilter(field, v, op, where)
+		buildBoolFilter(sb, field, v, op)
 	default:
-		// Puedes manejar otros tipos de valores según sea necesario
 	}
 }
 
-// buildStringFilter construye una cláusula WHERE para una columna de tipo string
-func buildStringFilter(field, value, op string, where *string) {
-	buildFilter(field, fmt.Sprintf("%%%s%%", value), op, "ILIKE", where)
+func buildStringFilter(sb *SQLBuilder, field, value, op string) {
+	sb.query = fmt.Sprintf("%s %s %s ILIKE '%%%s%%'", sb.query, op, field, value)
 }
 
-// buildTimeFilter construye una cláusula WHERE para una columna de tipo time.Time
-func buildTimeFilter(field string, value time.Time, op string, where *string) {
+func buildTimeFilter(sb *SQLBuilder, field string, value time.Time, op string) {
 	if !value.IsZero() {
-		buildFilter(field, value.Format("2006-01-02"), op, "=", where)
+		sb.query = fmt.Sprintf("%s %s %s = '%s'", sb.query, op, field, value.Format("2006-01-02"))
 	}
 }
 
-// buildBoolFilter construye una cláusula WHERE para una columna de tipo *bool
-func buildBoolFilter(field string, value *bool, op string, where *string) {
+func buildBoolFilter(sb *SQLBuilder, field string, value *bool, op string) {
 	if value != nil {
-		buildFilter(field, fmt.Sprintf("%v", *value), op, "=", where)
-	}
-}
-
-// buildFilter construye una cláusula WHERE para una columna de tipo string
-func buildFilter(field, value, op, comparison string, where *string) {
-	if len(*where) > 0 {
-		*where += fmt.Sprintf(" %s %s %s", op, field, comparison, value)
-	} else {
-		*where = fmt.Sprintf("%s %s %s", field, comparison, value)
+		sb.query = fmt.Sprintf("%s %s %s = '%v'", sb.query, op, field, *value)
 	}
 }
 
@@ -126,7 +118,6 @@ func (sb *SQLBuilder) Insert(table string, values map[string]interface{}) *SQLBu
 
 func (sb *SQLBuilder) Join(joinType, table, on, alias string) *SQLBuilder {
 	sb.query = fmt.Sprintf("%s %s %s ON %s", sb.query, joinType, table, on)
-	// Almacenar el alias para su uso posterior
 	sb.alias = alias
 	return sb
 }

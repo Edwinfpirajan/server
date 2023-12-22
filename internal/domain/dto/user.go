@@ -23,5 +23,6 @@ type User struct {
 type Users []User
 
 type UsersRequest struct {
+	Filter   User
 	Paginate Paginate
 }

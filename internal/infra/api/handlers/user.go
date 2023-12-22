@@ -56,9 +56,17 @@ func (uh *userHandler) CreateUser(c echo.Context) error {
 
 // GetUsers is the implementation of UserHandler.GetUsers
 func (uh *userHandler) GetUsers(c echo.Context) error {
-	users, err := uh.ua.GetUsers(c.Request().Context())
+	var request dto.UsersRequest
+	err := c.Bind(&request)
 	if err != nil {
+		return c.JSON(http.StatusBadRequest, entity.Response{
+			Message: "No fue posible obtener los usuarios",
+			Data:    nil,
+		})
+	}
 
+	users, err := uh.ua.GetUsers(c.Request().Context(), request)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			Message: "Internal Server Error",
 			Data:    nil,
@@ -66,7 +74,7 @@ func (uh *userHandler) GetUsers(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, entity.Response{
-		Message: "Success",
+		Message: "Users retrieved successfully",
 		Data:    users,
 	})
 }
