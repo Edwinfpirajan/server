@@ -12,20 +12,20 @@ type RoleHandler interface {
 }
 
 type roleHandler struct {
-	ra app.RoleApp
+	app app.RoleApp
 }
 
 func NewRoleHandler(ra app.RoleApp) RoleHandler {
 	return &roleHandler{ra}
 }
 
-func (rh *roleHandler) CreateRole(c echo.Context) error {
+func (hand *roleHandler) CreateRole(c echo.Context) error {
 	var role dto.Role
 	if err := c.Bind(&role); err != nil {
 		return err
 	}
 
-	role, err := rh.ra.CreateRole(c.Request().Context(), role)
+	role, err := hand.app.CreateRole(c.Request().Context(), role)
 	if err != nil {
 		return err
 	}
@@ -33,8 +33,8 @@ func (rh *roleHandler) CreateRole(c echo.Context) error {
 	return c.JSON(200, role)
 }
 
-func (rh *roleHandler) GetRoles(c echo.Context) error {
-	roles, err := rh.ra.GetRoles(c.Request().Context())
+func (hand *roleHandler) GetRoles(c echo.Context) error {
+	roles, err := hand.app.GetRoles(c.Request().Context())
 	if err != nil {
 		return err
 	}

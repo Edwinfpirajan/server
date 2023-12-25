@@ -4,6 +4,7 @@ import (
 	"github.com/Edwinfpirajan/server.git/internal/infra/api/handlers"
 	"github.com/Edwinfpirajan/server.git/internal/infra/api/router/groups"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // Router is the implementation of Group
@@ -28,6 +29,8 @@ func NewRouter(
 
 // Init is the implementation of Group.Init
 func (r *Router) Init() {
+
+	r.server.Use(middleware.Recover())
 
 	r.server.GET("/health", handlers.HealthCheck)
 

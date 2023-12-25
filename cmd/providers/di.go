@@ -30,11 +30,8 @@ func BuildContainer() *dig.Container {
 
 	_ = Container.Provide(db.NewPostgresConnection)
 
-	_ = Container.Provide(implementation.NewSQLBuilder)
-
 	// Repository
-	_ = Container.Provide(implementation.NewUserRepository)
-	_ = Container.Provide(implementation.NewRoleRepository)
+	_ = Container.Provide(implementation.NewRepository)
 
 	// App
 	_ = Container.Provide(app.NewUserApp)

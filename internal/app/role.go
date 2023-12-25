@@ -13,10 +13,10 @@ type RoleApp interface {
 }
 
 type roleApp struct {
-	repo interfaces.NewRoleRepository
+	repo interfaces.Repository
 }
 
-func NewRoleApp(repo interfaces.NewRoleRepository) RoleApp {
+func NewRoleApp(repo interfaces.Repository) RoleApp {
 	return &roleApp{repo}
 }
 

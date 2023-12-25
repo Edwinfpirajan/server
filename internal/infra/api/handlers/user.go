@@ -8,6 +8,7 @@ import (
 	"github.com/Edwinfpirajan/server.git/internal/domain/dto"
 	"github.com/Edwinfpirajan/server.git/internal/domain/entity"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/gommon/color"
 )
 
 // UserHandler is the interface of user handler
@@ -18,46 +19,44 @@ type UserHandler interface {
 
 // userHandler is the implementation of UserHandler
 type userHandler struct {
-	ua app.UserApp
+	app app.UserApp
 }
 
 // NewUserHandler is the constructor of userHandler
-func NewUserHandler(ua app.UserApp) UserHandler {
+func NewUserHandler(app app.UserApp) UserHandler {
 	return &userHandler{
-		ua,
+		app,
 	}
 }
 
 // CreateUser is the implementation of UserHandler.CreateUser
-func (uh *userHandler) CreateUser(c echo.Context) error {
-	var user dto.User
-	err := c.Bind(&user)
-	fmt.Println(user)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, entity.Response{
-			Message: "No fue posible crear el usuario",
-			Data:    nil,
-		})
+func (hand *userHandler) CreateUser(c echo.Context) error {
+	var request dto.User
+
+	if err := c.Bind(&request); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	user, err = uh.ua.CreateUser(c.Request().Context(), user)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, entity.Response{
-			Message: "Internal Server Error",
-			Data:    nil,
-		})
+	if err := request.Validate(); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err := hand.app.CreateUser(c.Request().Context(), request); err != nil {
+		return err
 	}
 
 	return c.JSON(http.StatusOK, entity.Response{
 		Message: "User created successfully",
-		Data:    user,
 	})
 }
 
 // GetUsers is the implementation of UserHandler.GetUsers
-func (uh *userHandler) GetUsers(c echo.Context) error {
+func (hand *userHandler) GetUsers(c echo.Context) error {
 	var request dto.UsersRequest
+	fmt.Println(color.Red("request.Filter.ID: "), request.Filter.ID)
+
 	err := c.Bind(&request)
+
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, entity.Response{
 			Message: "No fue posible obtener los usuarios",
@@ -65,7 +64,16 @@ func (uh *userHandler) GetUsers(c echo.Context) error {
 		})
 	}
 
-	users, err := uh.ua.GetUsers(c.Request().Context(), request)
+	// err = request.Validate()
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, entity.Response{
+			Message: "No fue posible obtener los usuarios",
+			Data:    nil,
+		})
+	}
+
+	users, err := hand.app.GetUsers(c.Request().Context(), request)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, entity.Response{
 			Message: "Internal Server Error",
