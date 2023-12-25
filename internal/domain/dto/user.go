@@ -3,10 +3,8 @@ package dto
 import (
 	"time"
 
-	"github.com/go-playground/validator"
+	"github.com/Edwinfpirajan/server.git/utils/db"
 )
-
-var validate = validator.New()
 
 // user is the data transfer object of user
 type User struct {
@@ -22,7 +20,7 @@ type User struct {
 }
 
 func (u *User) Validate() error {
-	return validate.Struct(u)
+	return db.Validate.Struct(u)
 }
 
 // Users is a slice of User
@@ -34,5 +32,5 @@ type UsersRequest struct {
 }
 
 func (u *UsersRequest) Validate() error {
-	return validate.Struct(u)
+	return db.Validate.Struct(u)
 }
